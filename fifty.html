@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>fifty</title>
+    <script src="jquery.3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            getWord();
+            init();
+
+            $("#btnSubmit").click(function () {
+                var meaning = $("#vn_mean").val();
+                var dataString = 'meaning=' + meaning;
+                $.ajax({
+                    type: "POST",
+                    url: "FiftyController.php",
+                    data: dataString,
+                    success: function (data) {
+                        dataJson = JSON.parse(data);
+                        if(dataJson['code'] == 1) {
+                            $('#nbc').text(dataJson['nbc']); 
+                            $('#nbc').val(dataJson['nbc']); 
+                            getWord();
+                        }
+                        if(dataJson['code'] == 0) {
+                                $('#answer').text(dataJson['answer']); 
+                                $('#answer').val(dataJson['answer']); 
+                                getWord();
+                                                       
+                        }
+                    }
+                });
+            });
+        });
+
+        function getWord() {
+            $.ajax({
+                type: "GET",
+                url: "FiftyController.php",
+                success: function (data) {
+                    var json = JSON.parse(data);
+                    $('#nbc').val(json['nbc']);
+                    $('#nbc').text(json['nbc']);
+                    $('#en_word').val(json['word']);
+                    $('#en_word').text(json['word']);
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <output>Number answer correct: </output>
+    <input type="text" id="nbc" value="some" disabled></input><br>
+    <output>word: </output>
+    <input type="text" id="en_word" value="word" disabled></input><br>
+    <output>vn mean: </output>
+    <input type="text" placeholder="type your mean" id="vn_mean"><br>
+    <input id="btnSubmit" name="submit" type="button" value="Submit">
+    <output>answer: </output>
+    <input type="text" id="answer" value="word" disabled></input><br>
+</body>
+
+</html>

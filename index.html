@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <base href="http://127.0.0.1/TwoDayLE/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jquery.3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#btnSubmit").click(function () {
+                var word = $("#word").val();
+                var meaning = $("#meaning").val();
+                var dataString = 'word=' + word + '&meaning=' + meaning;
+                $.ajax({
+                    type: "POST",
+                    url: "getData.php",
+                    data: dataString,
+                    success: function (data) {
+                        alert(data);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <form id="formSM">
+        <output>word: </output>
+        <input name="word" id="word" placeholder="input word"><br>
+        <output>meaning: </output>
+        <input name="meaning" id="meaning" placeholder="vn meaning mapping"><br>
+        <input id="btnSubmit" name="submit" type="button" value="Submit">
+    </form>
+</body>
+
+</html>
